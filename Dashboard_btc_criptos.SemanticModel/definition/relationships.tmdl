@@ -1,0 +1,5 @@
+relationship 04d06b51-f1e6-4644-92af-226da6a81e40
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Criptomoedas.'Data Atualizacao'
+	toColumn: LocalDateTable_01bd9c1b-c835-466f-b751-76e627eb0ff5.Date
+

@@ -1,0 +1,120 @@
+table Criptomoedas
+	lineageTag: 778c3ff1-c033-42c6-97b2-613530dd3846
+
+	column Simbolo
+		dataType: string
+		lineageTag: 1ee04f08-8e65-4b19-b40b-f778a4b9abd5
+		summarizeBy: none
+		sourceColumn: Simbolo
+
+		annotation SummarizationSetBy = Automatic
+
+	column Nome
+		dataType: string
+		lineageTag: d159f946-c2cc-494b-a072-29110137faa7
+		summarizeBy: none
+		sourceColumn: Nome
+
+		annotation SummarizationSetBy = Automatic
+
+	column Imagem
+		dataType: string
+		lineageTag: 99da5842-3a8c-4c7c-b168-31847c0519de
+		dataCategory: ImageUrl
+		summarizeBy: none
+		sourceColumn: Imagem
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Preco Atual'
+		dataType: double
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
+		lineageTag: 52a440b6-dc1c-4520-ba88-984733c13fc4
+		summarizeBy: sum
+		sourceColumn: Preco Atual
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	column 'Capitalizacao Mercado'
+		dataType: int64
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
+		lineageTag: c8a6c4fa-b278-44ce-89d7-90b84374a4d0
+		summarizeBy: sum
+		sourceColumn: Capitalizacao Mercado
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	column Rank
+		dataType: int64
+		formatString: 0
+		lineageTag: 5504f810-0cef-43cb-9e72-a03234343ae1
+		summarizeBy: sum
+		sourceColumn: Rank
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Volume Total'
+		dataType: int64
+		formatString: #,0
+		lineageTag: bde3c2d4-78b4-4793-8eb3-9d36f170e466
+		summarizeBy: sum
+		sourceColumn: Volume Total
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Data Atualizacao'
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 45db71bb-8c80-40e8-ae51-f0aaec13d1f3
+		summarizeBy: none
+		sourceColumn: Data Atualizacao
+
+		variation Variation
+			isDefault
+			relationship: 04d06b51-f1e6-4644-92af-226da6a81e40
+			defaultHierarchy: LocalDateTable_01bd9c1b-c835-466f-b751-76e627eb0ff5.'Hierarquia de datas'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Variacao Percentual 24h'
+		dataType: double
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 18055cc9-60bf-4d42-b827-6d92de3815c3
+		summarizeBy: sum
+		sourceColumn: Variacao Percentual 24h
+
+		annotation SummarizationSetBy = Automatic
+
+	column Criptomoeda = [Simbolo] & " - " & [Nome]
+		lineageTag: 10de3936-b2df-4ffd-95fc-c6b2d0848c57
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Criptomoedas = m
+		mode: import
+		source =
+				let
+				    Fonte = Json.Document(Web.Contents("https://api.coingecko.com/api/v3/coins/markets?vs_currency=brl")),
+				    #"Convertido para Tabela" = Table.FromList(Fonte, Splitter.SplitByNothing(), null, null, ExtraValues.Error),
+				    #"Column1 Expandido" = Table.ExpandRecordColumn(#"Convertido para Tabela", "Column1", {"id", "symbol", "name", "image", "current_price", "market_cap", "market_cap_rank", "fully_diluted_valuation", "total_volume", "high_24h", "low_24h", "price_change_24h", "price_change_percentage_24h", "market_cap_change_24h", "market_cap_change_percentage_24h", "circulating_supply", "total_supply", "max_supply", "ath", "ath_change_percentage", "ath_date", "atl", "atl_change_percentage", "atl_date", "roi", "last_updated"}, {"id", "symbol", "name", "image", "current_price", "market_cap", "market_cap_rank", "fully_diluted_valuation", "total_volume", "high_24h", "low_24h", "price_change_24h", "price_change_percentage_24h", "market_cap_change_24h", "market_cap_change_percentage_24h", "circulating_supply", "total_supply", "max_supply", "ath", "ath_change_percentage", "ath_date", "atl", "atl_change_percentage", "atl_date", "roi", "last_updated"}),
+				    #"Tipo Alterado" = Table.TransformColumnTypes(#"Column1 Expandido",{{"id", type text}, {"symbol", type text}, {"name", type text}, {"image", type text}, {"current_price", type number}, {"market_cap", Int64.Type}, {"market_cap_rank", Int64.Type}, {"fully_diluted_valuation", Int64.Type}, {"total_volume", Int64.Type}, {"high_24h", type number}, {"low_24h", type number}, {"price_change_24h", type number}, {"price_change_percentage_24h", type number}, {"market_cap_change_24h", type number}, {"market_cap_change_percentage_24h", type number}, {"circulating_supply", type number}, {"total_supply", type number}, {"max_supply", type number}, {"ath", type number}, {"ath_change_percentage", type number}, {"ath_date", type datetime}, {"atl", type number}, {"atl_change_percentage", type number}, {"atl_date", type datetime}, {"roi", type any}, {"last_updated", type datetime}}),
+				    #"Colunas Removidas" = Table.RemoveColumns(#"Tipo Alterado",{"fully_diluted_valuation", "high_24h", "low_24h", "price_change_24h", "market_cap_change_24h", "market_cap_change_percentage_24h", "circulating_supply", "total_supply", "max_supply", "ath", "ath_change_percentage", "ath_date", "atl", "atl_change_percentage", "atl_date", "roi"}),
+				    #"Personalização Adicionada" = Table.AddColumn(#"Colunas Removidas", "Variacao Percentual 24h", each Value.Divide([price_change_percentage_24h], 100)),
+				    #"Tipo Alterado1" = Table.TransformColumnTypes(#"Personalização Adicionada",{{"Variacao Percentual 24h", type number}}),
+				    #"Colunas Removidas1" = Table.RemoveColumns(#"Tipo Alterado1",{"id"}),
+				    #"Colunas Renomeadas" = Table.RenameColumns(#"Colunas Removidas1",{{"symbol", "Simbolo"}, {"name", "Nome"}, {"image", "Imagem"}, {"current_price", "Preco Atual"}, {"market_cap", "Capitalizacao Mercado"}, {"market_cap_rank", "Rank"}, {"total_volume", "Volume Total"}}),
+				    #"Colunas Removidas2" = Table.RemoveColumns(#"Colunas Renomeadas",{"price_change_percentage_24h"}),
+				    #"Colunas Renomeadas1" = Table.RenameColumns(#"Colunas Removidas2",{{"last_updated", "Data Atualizacao"}}),
+				    #"Texto em Maiúscula" = Table.TransformColumns(#"Colunas Renomeadas1",{{"Simbolo", Text.Upper, type text}})
+				in
+				    #"Texto em Maiúscula"
+
+	annotation PBI_NavigationStepName = Navegação
+
+	annotation PBI_ResultType = Table
+

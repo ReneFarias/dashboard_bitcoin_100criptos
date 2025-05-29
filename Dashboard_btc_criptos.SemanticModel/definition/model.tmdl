@@ -1,0 +1,22 @@
+model Model
+	culture: pt-BR
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: pt-BR
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation PBI_QueryOrder = ["Criptomoedas"]
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBIDesktopVersion = 2.143.878.0 (25.05)+b20aa3b866ec1b70879135a4e60e4b1301c75b21
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table Criptomoedas
+ref table DateTableTemplate_f31aefc1-5131-40fb-9cfd-cb829ae1be3c
+ref table LocalDateTable_01bd9c1b-c835-466f-b751-76e627eb0ff5
+
+ref cultureInfo pt-BR
+

@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "Dashboard_btc_criptos"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "bc3ecc9f-debc-4143-b87b-781be91e860e"
+  }
+}
