@@ -85,7 +85,7 @@ table 'Bitcoin Historico'
 		mode: import
 		source =
 				let
-				    Fonte = Excel.Workbook(File.Contents("D:\Documentos\Dados bitcoin.xlsx"), null, true),
+				    Fonte = Excel.Workbook(File.Contents("D:\Documentos\GitHub\dashboard_bitcoin_100criptos\Dados bitcoin.xlsx"), null, true),
 				    #"Bitcoin Historico_Sheet" = Fonte{[Item="Bitcoin Historico",Kind="Sheet"]}[Data],
 				    #"Cabeçalhos Promovidos" = Table.PromoteHeaders(#"Bitcoin Historico_Sheet", [PromoteAllScalars=true]),
 				    #"Tipo Alterado" = Table.TransformColumnTypes(#"Cabeçalhos Promovidos",{{"Var%", Percentage.Type}, {"Mínima", Currency.Type}, {"Máxima", Currency.Type}, {"Abertura", Currency.Type}, {"Último", Currency.Type}, {"Data", type date}}),

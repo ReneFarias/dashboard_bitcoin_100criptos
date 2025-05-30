@@ -22,7 +22,7 @@ table Planilha1
 		mode: import
 		source =
 				let
-				    Fonte = Excel.Workbook(File.Contents("D:\Documentos\Dados bitcoin.xlsx"), null, true),
+				    Fonte = Excel.Workbook(File.Contents("D:\Documentos\GitHub\dashboard_bitcoin_100criptos\Dados bitcoin.xlsx"), null, true),
 				    Planilha1_Sheet = Fonte{[Item="Planilha1",Kind="Sheet"]}[Data],
 				    #"Cabeçalhos Promovidos" = Table.PromoteHeaders(Planilha1_Sheet, [PromoteAllScalars=true]),
 				    #"Tipo Alterado" = Table.TransformColumnTypes(#"Cabeçalhos Promovidos",{{"Pessoa", type text}, {"idade", Int64.Type}})
