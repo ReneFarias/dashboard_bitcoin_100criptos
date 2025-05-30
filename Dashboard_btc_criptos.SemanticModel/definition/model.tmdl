@@ -6,7 +6,7 @@ model Model
 		legacyRedirects
 		returnErrorValuesAsNull
 
-annotation PBI_QueryOrder = ["Criptomoedas"]
+annotation PBI_QueryOrder = ["Criptomoedas","Bitcoin Historico","Planilha1"]
 
 annotation __PBI_TimeIntelligenceEnabled = 1
 
@@ -17,6 +17,9 @@ annotation PBI_ProTooling = ["DevMode"]
 ref table Criptomoedas
 ref table DateTableTemplate_f31aefc1-5131-40fb-9cfd-cb829ae1be3c
 ref table LocalDateTable_01bd9c1b-c835-466f-b751-76e627eb0ff5
+ref table 'Bitcoin Historico'
+ref table LocalDateTable_220f1e0b-563d-4401-8ebf-85f3bf8e7afb
+ref table Planilha1
 
 ref cultureInfo pt-BR
 

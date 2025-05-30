@@ -3,3 +3,8 @@ relationship 04d06b51-f1e6-4644-92af-226da6a81e40
 	fromColumn: Criptomoedas.'Data Atualizacao'
 	toColumn: LocalDateTable_01bd9c1b-c835-466f-b751-76e627eb0ff5.Date
 
+relationship 090643eb-2d00-4eec-9550-2f4fc52ec216
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'Bitcoin Historico'.Data
+	toColumn: LocalDateTable_220f1e0b-563d-4401-8ebf-85f3bf8e7afb.Date
+

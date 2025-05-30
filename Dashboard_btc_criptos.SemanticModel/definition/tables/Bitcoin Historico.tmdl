@@ -1,0 +1,99 @@
+table 'Bitcoin Historico'
+	lineageTag: 08d41ed7-5d72-4556-87e2-f05b6833ffdc
+
+	column Data
+		dataType: dateTime
+		formatString: dd/mm/yy
+		lineageTag: 70a97ad1-7464-458e-9744-ff3577d20731
+		summarizeBy: none
+		sourceColumn: Data
+
+		variation Variation
+			isDefault
+			relationship: 090643eb-2d00-4eec-9550-2f4fc52ec216
+			defaultHierarchy: LocalDateTable_220f1e0b-563d-4401-8ebf-85f3bf8e7afb.'Hierarquia de datas'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column Fechamento
+		dataType: decimal
+		formatString: "R$"\ #,0.###############;-"R$"\ #,0.###############;"R$"\ #,0.###############
+		lineageTag: 2e9ce335-97e6-4dee-ba92-42db3597b178
+		summarizeBy: max
+		sourceColumn: Fechamento
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	column Abertura
+		dataType: decimal
+		formatString: "R$"\ #,0.###############;-"R$"\ #,0.###############;"R$"\ #,0.###############
+		lineageTag: d9f61feb-99b4-476a-8f58-638d1bbf42a7
+		summarizeBy: max
+		sourceColumn: Abertura
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	column Máxima
+		dataType: decimal
+		formatString: "R$"\ #,0.###############;-"R$"\ #,0.###############;"R$"\ #,0.###############
+		lineageTag: f5251220-97e2-48df-a341-23f1c54badfa
+		summarizeBy: max
+		sourceColumn: Máxima
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	column Mínima
+		dataType: decimal
+		formatString: "R$"\ #,0.###############;-"R$"\ #,0.###############;"R$"\ #,0.###############
+		lineageTag: 16523c05-23c9-47f4-b751-b31a8dc067e4
+		summarizeBy: min
+		sourceColumn: Mínima
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	column 'Vol.'
+		dataType: string
+		lineageTag: db9edf49-6a81-4709-ba64-fa63b5f05bbc
+		summarizeBy: none
+		sourceColumn: Vol.
+
+		annotation SummarizationSetBy = Automatic
+
+	column Var%
+		dataType: double
+		lineageTag: 9c7a24b2-38ca-432f-aa47-1a46b29ff8ad
+		summarizeBy: sum
+		sourceColumn: Var%
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition 'Bitcoin Historico' = m
+		mode: import
+		source =
+				let
+				    Fonte = Excel.Workbook(File.Contents("D:\Documentos\Dados bitcoin.xlsx"), null, true),
+				    #"Bitcoin Historico_Sheet" = Fonte{[Item="Bitcoin Historico",Kind="Sheet"]}[Data],
+				    #"Cabeçalhos Promovidos" = Table.PromoteHeaders(#"Bitcoin Historico_Sheet", [PromoteAllScalars=true]),
+				    #"Tipo Alterado" = Table.TransformColumnTypes(#"Cabeçalhos Promovidos",{{"Var%", Percentage.Type}, {"Mínima", Currency.Type}, {"Máxima", Currency.Type}, {"Abertura", Currency.Type}, {"Último", Currency.Type}, {"Data", type date}}),
+				    #"Colunas Renomeadas" = Table.RenameColumns(#"Tipo Alterado",{{"Último", "Fechamento"}})
+				in
+				    #"Colunas Renomeadas"
+
+	annotation PBI_NavigationStepName = Navegação
+
+	annotation PBI_ResultType = Table
+

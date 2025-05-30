@@ -10,13 +10,39 @@
       "nodes": [
         {
           "location": {
-            "x": 0,
+            "x": 568,
             "y": 0
           },
           "nodeIndex": "Criptomoedas",
           "nodeLineageTag": "778c3ff1-c033-42c6-97b2-613530dd3846",
           "size": {
             "height": 296,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 0,
+            "y": 24
+          },
+          "nodeIndex": "Bitcoin Historico",
+          "nodeLineageTag": "08d41ed7-5d72-4556-87e2-f05b6833ffdc",
+          "size": {
+            "height": 248,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 284,
+            "y": 84
+          },
+          "nodeIndex": "Planilha1",
+          "nodeLineageTag": "761835d1-6c62-4f68-8269-172faf99fa25",
+          "size": {
+            "height": 128,
             "width": 234
           },
           "zIndex": 0
